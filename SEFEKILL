@@ -1,0 +1,260 @@
+
+off = "🔴"
+on = "🟢"
+
+function MOBILib(Lib, Offset, Replaced) local info = gg.getTargetInfo() localpack = info.nativeLibraryDir local t = gg.getRangesList(localpack..'/lib'..Lib..'.so') for _, __ in pairs(t) do local t = gg.getValues({{address = __.start, flags = gg.TYPE_DWORD}, {address = __.start + 18, flags = gg.TYPE_WORD}}) if t[1].value == 1179403647 then Offset = __['start'] + Offset end assert(Offset ~= nil, '[rwmem]: error, provided address is nil.') _rw = {} if type(Replaced) == 'number' then _ = '' for _ = 1, Replaced do _rw[_] = {address = (Offset - 1) + _, flags = gg.TYPE_BYTE} end for v, __ in ipairs(gg.getValues(_rw)) do _ = _ .. string.format('%02X', __.value & 255) end return _ end Byte = {} Replaced:gsub('..', function(x) Byte[#Byte + 1] = x _rw[#Byte] = {address = (Offset - 1) + #Byte, flags = gg.TYPE_BYTE, value = x .. 'h'} end) gg.setValues(_rw) end end
+
+function setvalue(address,flags,value) local tt={} tt[1]={} tt[1].address=address tt[1].flags=flags tt[1].value=value gg.setValues(tt) end
+
+
+function setvalue(address,flags,value) 
+local tt={} tt[1]={} tt[1].address=address tt[1].flags=flags tt[1].value=value 
+gg.setValues(tt) end local n, startAddress, endAddress = nil, 0, 0 local function name(lib) if n == lib then return startAddress, endAddress end local ranges = gg.getRangesList(lib or 'libil2cpp.so') for i, v in ipairs(ranges) do if v.state == "Xa" then startAddress = v.start endAddress = ranges[#ranges]['end'] break end end return startAddress, endAddress end local function Hacheat(libname, offset, hex) name(libname) local t, total = {}, 0 for h in string.gmatch(hex, "%S%S") do  table.insert(t, { address = startAddress + offset + total,flags = gg.TYPE_BYTE,value = h .. "r"    }) total = total + 1 end local res = gg.setValues(t) if type(res) ~= 'string' then return true else gg.alert(res) return false end end
+
+ function setvalue(address,flags,value) 
+local tt={} tt[1]={} tt[1].address=address tt[1].flags=flags tt[1].value=value 
+gg.setValues(tt) end local n, startAddress, endAddress = nil, 0, 0 local function name(lib) if n == lib then return startAddress, endAddress end local ranges = gg.getRangesList(lib or 'libil2cpp.so') for i, v in ipairs(ranges) do if v.state == "Xa" then startAddress = v.start endAddress = ranges[#ranges]['end'] break end end return startAddress, endAddress end local function Hacheat(libname, offset, hex) name(libname) local t, total = {}, 0 for h in string.gmatch(hex, "%S%S") do  table.insert(t, { address = startAddress + offset + total,flags = gg.TYPE_BYTE,value = h .. "r"    }) total = total + 1 end local res = gg.setValues(t) if type(res) ~= 'string' then return true else gg.alert(res) return false end end
+
+
+function setvalue(address,flags,value) local tt={} tt[1]={} tt[1].address=address tt[1].flags=flags tt[1].value=value gg.setValues(tt) end
+
+
+function MOBI(old, new) gg.clearResults() gg.setRanges(0x20) gg.searchNumber(old, 0x20) gg.getResults(1000) gg.editAll(new, 0x20) gg.clearResults() end
+
+function mobi2(A0_8, A1_9)
+    localpack = gg.getTargetInfo().nativeLibraryDir
+    for i, i in pairs((gg.getRangesList(localpack .. "/libil2cpp.so"))) do
+      if gg.getValues({
+        {
+          address = i.start,
+          flags = gg.TYPE_DWORD
+        },
+        {
+          address = i.start + 18,
+          flags = gg.TYPE_WORD
+        }
+      })[1].value == 1179403647 then
+        A0_8 = i.start + A0_8
+      end
+      assert(A0_8 ~= nil, "[rwmem]: error, provided address is nil.")
+      _rw = {} 
+      if type(A1_9) == "number" then
+        i = ""
+        for i = 1, A1_9 do
+          _rw[i] = {
+            address = A0_8 - 1 + i,
+            flags = gg.TYPE_BYTE
+          }
+        end
+        for i, i in ipairs(gg.getValues(_rw)) do
+          i = i .. string.format("%02X", i.value & 255)
+        end
+        return i
+      end
+      Byte = {}
+      A1_9:gsub("..", function(A0_10)
+        local L1_11, L2_12, L3_13
+        L1_11 = Byte
+        L2_12 = Byte
+        L2_12 = #L2_12
+        L2_12 = L2_12 + 1
+        L1_11[L2_12] = A0_10
+        L1_11 = _rw
+        L2_12 = Byte
+        L2_12 = #L2_12
+        L3_13 = {}
+        L3_13.address = A0_8 - 1 + #Byte
+        L3_13.flags = gg.TYPE_BYTE
+        L3_13.value = A0_10 .. "h"
+        L1_11[L2_12] = L3_13
+      end
+      )
+      gg.setValues(_rw)
+    end
+  end
+
+function mobi3(A0_8, A1_9)
+    localpack = gg.getTargetInfo().nativeLibraryDir
+    for i, i in pairs((gg.getRangesList(localpack .. "/libunity.so"))) do
+      if gg.getValues({
+        {
+         address = i.start,
+          flags = gg.TYPE_DWORD
+        },
+        {
+          address = i.start + 18,
+          flags = gg.TYPE_WORD
+        }
+      })[1].value == 1179403647 then
+        A0_8 = i.start + A0_8
+      end
+      assert(A0_8 ~= nil, "[rwmem]: error, provided address is nil.")
+      _rw = {} 
+      if type(A1_9) == "number" then
+        i = ""
+        for i = 1, A1_9 do
+          _rw[i] = {
+            address = A0_8 - 1 + i,
+            flags = gg.TYPE_BYTE
+          }
+        end
+        for i, i in ipairs(gg.getValues(_rw)) do
+          i = i .. string.format("%02X", i.value & 255)
+        end
+        return i
+      end
+      Byte = {}
+      A1_9:gsub("..", function(A0_10)
+        local L1_11, L2_12, L3_13
+        L1_11 = Byte
+        L2_12 = Byte
+        L2_12 = #L2_12
+        L2_12 = L2_12 + 1
+        L1_11[L2_12] = A0_10
+        L1_11 = _rw
+        L2_12 = Byte
+        L2_12 = #L2_12
+        L3_13 = {}
+        L3_13.address = A0_8 - 1 + #Byte
+        L3_13.flags = gg.TYPE_BYTE
+        L3_13.value = A0_10 .. "h"
+        L1_11[L2_12] = L3_13
+      end
+      )
+      gg.setValues(_rw)
+    end
+  end
+
+function START1()
+menu = gg.choice({
+"\n〘NO - RECOIL ++〙\n",
+a1 .. " 〘SPEED HACK 5X🏃〙\n",
+a .. " 〘SPEED HACK 10X🏃〙\n",
+f..  "〘SPEED HACK TIME 50X🏃〙\n",
+"〘❌SAIR❌〙",
+},nil,[[SCRIPT:〘Ⓣ〙SEFE-KILL VIP
+GAMER: FREE FIRE MAX
+VERSÃO: 2.118.X
+
+🔰EQP TRISTE TV🔰]])
+if menu == 1 then recoil() end
+if menu == 2 then speed1() end
+if menu == 3 then speed2() end
+if menu == 4 then speed3() end
+if menu == 5 then os.exit() end
+if menu == 6 then START1() end
+end
+
+a1 = off
+function speed1()
+if a1 == off then
+ gg.setVisible(false)
+    gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_BAD)
+gg.searchNumber("h022B073D022B073D022B073D000000009B6CF241", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.processResume()
+revert = gg.getResults(100, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("hE3A59B3CE3A59B3C022B073D000000009B6CF241", gg.TYPE_BYTE)
+gg.processResume()
+gg.toast("SPEED HACK 5X ON")
+    a1 = on
+elseif a1 == on then
+gg.searchNumber("hE3A59B3CE3A59B3C022B073D000000009B6CF241", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.processResume()
+revert = gg.getResults(100, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h022B073D022B073D022B073D000000009B6CF241", gg.TYPE_BYTE)
+gg.processResume()
+gg.toast("SPEED HACK 5X OFF")
+    gg.clearResults()
+    gg.setVisible(false)
+    a1 = off
+end
+end
+
+a = off
+function speed2()
+if a == off then
+ gg.setVisible(false)
+    gg.setRanges(gg.REGION_C_ALLOC | gg.REGION_BAD)
+gg.searchNumber("h 02 2B 07 3D 02 2B 07 3D 02 2B 07 3D 00 00 00 00 9B 6C F2 41", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.processResume()
+revert = gg.getResults(100, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h E3 A5 88 3C E3 A5 88 3C 02 2B 07 3D 00 00 00 00 9B 6C F2 41", gg.TYPE_BYTE)
+gg.processResume()
+gg.toast("SPEED HACK 10X ON")
+    a = on
+elseif a == on then
+gg.searchNumber("h E3 A5 88 3C E3 A5 88 3C 02 2B 07 3D 00 00 00 00 9B 6C F2 41", gg.TYPE_BYTE, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.processResume()
+revert = gg.getResults(100, nil, nil, nil, nil, nil, nil, nil, nil)
+gg.editAll("h 02 2B 07 3D 02 2B 07 3D 02 2B 07 3D 00 00 00 00 9B 6C F2 41", gg.TYPE_BYTE)
+gg.processResume()
+gg.toast("SPEED HACK 10X OFF")
+    gg.clearResults()
+    gg.setVisible(false)
+    a = off
+end
+end
+
+f = off
+local t10 = {}
+
+function speed3()
+if f == off then
+    gg.setVisible(false)
+    gg.setRanges(gg.REGION_ANONYMOUS | gg.REGION_CODE_APP)
+    gg.searchNumber("h 01 00 00 00 02 2B 07 3D", gg.TYPE_BYTE)
+    t10 = gg.getResults(gg.getResultsCount())
+    gg.setValues(t10)
+    gg.editAll("h 01 00 00 00 02 2B 80 3D", gg.TYPE_BYTE)
+    gg.clearResults()
+    gg.toast("SPEED HACK TIME 50X ON")
+    f = on
+elseif f == on then
+  gg.clearResults()  
+    gg.setValues(t10)
+    gg.editAll("h 01 00 00 00 02 2B 07 3D", gg.TYPE_BYTE)
+    gg.toast("SPEED HACK TIME 50X OFF")
+    gg.clearResults()
+    gg.setVisible(false)
+    f = off
+end
+end
+
+function recoil()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("0.01748251915", gg.TYPE_FLOAT, false, gg.SIGN_EQUAL, 0, -1)
+gg.getResults(999)
+gg.editAll("2.2447142e-38", gg.TYPE_FLOAT)
+gg.clearResults()
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/files/MReplays/")
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/cache/apk.pdcache/")
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/cache/obb.pdcache/")
+os.remove("/storage/emulated/0/ᴀɴᴅʀᴏɪᴅ/data/com.dts.freefireth/files/report.db/")
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/files/ffrtc_log.txt/")
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/files/ShaderStripSettings/")
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/cache/UnityShaderCache/")
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/cache/")
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/files/MReplays/_rep.bin/")
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/files/MReplays/_rep.json/")
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/files/MReplays/rep.bin/")
+os.remove("/storage/emulated/0/Android/data/com.dts.freefireth/files/MReplays/rep.json/")
+gg.toast("NO - RECOIL ON🤪")
+end
+
+print([[
+◆ ▬▬▬▬▬▬▬ ❴.❵ ▬▬▬▬▬▬▬ ◆
+  SCRIPT 〘Ⓣ〙SEFE-KILL VIP / FF MAX 2.118 🔻🔺
+◆ ▬▬▬▬▬▬▬ ❴.❵ ▬▬▬▬▬▬▬ ◆
+Creditos: 👑EQP TRISTE TV👑
+]])
+
+--Não Apague Em Baixo
+while true do
+if gg.isVisible(true) then
+XGCK = 1
+gg.setVisible(false)
+gg.clearResults()
+end
+if XGCK == 1 then START1() end
+XGCK = -1
+end
